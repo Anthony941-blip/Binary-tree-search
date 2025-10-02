@@ -21,6 +21,29 @@ void inorderPrint(BSTNode* root);
 void freeTree(BSTNode* root);
 
 int main() {
+	BSTNode* root = nullptr;
+
+	insertRecursive(root, 8);
+        insertIterative(root, 3);
+        insertIterative(root, 10);
+        insertRecursive(root, 1);
+        insertRecursive(root, 6);
+        insertIterative(root, 14);
+        insertRecursive(root, 4);
+        insertIterative(root, 7);
+        insertRecursive(root, 13);
+
+	cout << "Inorder traversal: ";
+	inorderPrint(root);
+	cout << "\n";
+
+	cout << "SEarch 7 (rec): " << 
+		(searchRecursive(root, 7)?"Found":"Not Found") << "\n";
+	cout << "Search 9 (it): " << 
+		(searchIterative(root,9)?"Found":"Not Found") << "\n";
+
+	freeTree(root);
+
 
 
 	return 0;
