@@ -20,6 +20,8 @@ bool searchIterative(BSTNode*& root, int key);
 void inorderPrint(BSTNode* root);
 void freeTree(BSTNode* root);
 BSTNode* minValueNode(BSTNode* root);
+void deleteRecursive(BSTNode*& root, int key);
+
 
 int main() {
 	BSTNode* root = nullptr;
@@ -46,6 +48,24 @@ int main() {
 	freeTree(root);
 
 
+
+	//Perfom deletion using Delete recurside
+	cout << "\n--- Peforming deletions ---\n";
+
+	cout << "Deleting 1 (leaf)...\n";
+	deleteRecursive(root, 1);
+	cout << "Deleting 14 (one child)...\n";
+	deleteRecursive(root, 14);;
+	cout << "Deleting 8 (two childre / root)..\n";
+	deleteRecursive(root, 8);
+
+	cout << "\nInorder traversal after deletions: ";
+	inorderPrint(root);
+	cout << "\n";
+
+	//free all dymanically allocated nodes
+	freeTree(root);
+	root = nullptr;
 
 	return 0;
 }
@@ -153,3 +173,34 @@ BSTNode* minValueNode(BSTNode* root) {
         return cur;
 
 }
+
+
+void deleteRecursive(BSTNode*& root, int key) {
+        if(root == nullptr) {
+                return;
+        }
+
+        //1. Locate the node
+        if(key < root->data) {
+                deleteRecursive(root->left, key);
+        } else if(key > root->data) {
+                deleteRecursive(root->right, key);
+        } else { //foun the node
+                // Case 1: Leaf: L & R pointers are nullptr
+                if(!root->left && !root->right) {
+                        delete root;
+                        root = nullptr;
+		 } //CASE 2 : one child: L or R pointer is nullptr
+                	else if(!root->left || !root->right) {
+                        	BSTNode* child = root->left ? root->left : root->right;
+                        	delete root;
+                        	root = child;
+               		 } //Case 3: Two children
+                	else {
+                        	BSTNode* succ = minValueNode(root->right);
+                        	root->data = succ->data;
+                        	deleteRecursive(root->right, succ->data);
+                	}
+        	}
+}
+
